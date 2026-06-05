@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estética</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EFE7D8;
+    --cream-2:#E5DBC7;
+    --bone:#F7F1E3;
+    --clay:#B7654A;
+    --clay-dark:#8E4A33;
+    --ink:#231510;
+    --ink-soft:#3E2A20;
+    --sage:#5C6A4E;
+    --gold:#A0824A;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'DM Sans', sans-serif;
+    font-weight:400;
+    line-height:1.5;
+    overflow-x:hidden;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(183,101,74,0.08), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(92,106,78,0.07), transparent 60%);
+  }
+  /* grain overlay */
+  body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;opacity:0.35;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.137 0 0 0 0 0.082 0 0 0 0 0.063 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* serif italic display */
+  .serif{font-family:'Fraunces', serif;font-weight:400;letter-spacing:-0.02em;font-variation-settings:"opsz" 144}
+  .serif-it{font-family:'Fraunces', serif;font-style:italic;font-weight:300;font-variation-settings:"opsz" 144}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:22px 48px;display:flex;justify-content:space-between;align-items:center;
+    backdrop-filter:blur(14px);
+    background:rgba(239,231,216,0.65);
+    border-bottom:1px solid rgba(35,21,16,0.08);
+  }
+  .logo{font-family:'Fraunces',serif;font-size:24px;letter-spacing:-0.03em;font-weight:500}
+  .logo sup{font-style:italic;font-weight:300;font-size:12px;color:var(--clay);vertical-align:super;margin-left:2px}
+  .nav-links{display:flex;gap:36px;font-size:13px;letter-spacing:0.05em;text-transform:uppercase}
+  .nav-links a{color:var(--ink);text-decoration:none;transition:color .3s;position:relative}
+  .nav-links a:hover{color:var(--clay)}
+  .nav-cta{padding:10px 22px;background:var(--ink);color:var(--cream);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border-radius:999px;transition:all .3s}
+  .nav-cta:hover{background:var(--clay)}
+
+  /* HERO */
+  .hero{
+    min-height:100vh;
+    padding:160px 48px 80px;
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:60px;
+    position:relative;
+    align-items:center;
+  }
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink-soft);
+    margin-bottom:32px;
+  }
+  .hero-tag::before{content:'';width:32px;height:1px;background:var(--clay)}
+  h1.hero-title{
+    font-family:'Fraunces',serif;
+    font-size:clamp(56px, 9vw, 142px);
+    line-height:0.92;
+    letter-spacing:-0.04em;
+    font-weight:300;
+    color:var(--ink);
+    margin-bottom:36px;
+  }
+  h1.hero-title em{font-style:italic;color:var(--clay);font-weight:300;font-variation-settings:"opsz" 144}
+  .hero-sub{
+    font-size:18px;max-width:480px;color:var(--ink-soft);margin-bottom:48px;line-height:1.55;
+  }
+  .hero-actions{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .btn-primary{
+    padding:18px 36px;background:var(--ink);color:var(--cream);
+    text-decoration:none;border-radius:999px;
+    font-size:13px;letter-spacing:0.15em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:12px;
+    transition:all .35s;
+  }
+  .btn-primary:hover{background:var(--clay);transform:translateY(-2px)}
+  .btn-primary svg{transition:transform .35s}
+  .btn-primary:hover svg{transform:translateX(4px)}
+  .btn-ghost{
+    color:var(--ink);text-decoration:none;font-size:13px;letter-spacing:0.15em;
+    text-transform:uppercase;padding:18px 0;border-bottom:1px solid var(--ink);
+  }
+  .hero-visual{
+    position:relative;
+    height:640px;
+  }
+  .hero-img{
+    position:absolute;border-radius:200px 200px 16px 16px;overflow:hidden;
+    box-shadow:0 30px 80px -20px rgba(35,21,16,0.35);
+  }
+  .hero-img.main{
+    width:100%;height:100%;
+    background:
+      linear-gradient(180deg, rgba(35,21,16,0.05), rgba(35,21,16,0.25)),
+      url('https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&q=80') center/cover;
+  }
+  .hero-img.accent{
+    width:180px;height:240px;border-radius:120px 120px 12px 12px;
+    bottom:-30px;left:-40px;
+    background:url('https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400&q=80') center/cover;
+    border:8px solid var(--cream);
+  }
+  .hero-badge{
+    position:absolute;top:30px;right:-20px;
+    width:130px;height:130px;border-radius:50%;
+    background:var(--clay);color:var(--cream);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-style:italic;
+    font-size:13px;text-align:center;line-height:1.2;padding:20px;
+    animation:spin 24s linear infinite;
+  }
+  .hero-badge span{display:block}
+  .hero-badge .big{font-size:32px;font-style:normal;font-weight:400;margin-bottom:4px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* marquee */
+  .marquee{
+    overflow:hidden;border-top:1px solid rgba(35,21,16,0.15);
+    border-bottom:1px solid rgba(35,21,16,0.15);
+    padding:24px 0;background:var(--bone);
+  }
+  .marquee-track{
+    display:flex;gap:60px;white-space:nowrap;
+    animation:scroll 35s linear infinite;
+    font-family:'Fraunces',serif;font-size:32px;font-style:italic;font-weight:300;
+    color:var(--ink-soft);
+  }
+  .marquee-track span{display:flex;align-items:center;gap:60px}
+  .marquee-track span::after{content:'❋';color:var(--clay);font-style:normal}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* SERVICES */
+  section.services{padding:140px 48px;position:relative}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:80px;gap:60px;flex-wrap:wrap}
+  .eyebrow{font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--clay);display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .eyebrow::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--clay)}
+  h2.section-title{
+    font-family:'Fraunces',serif;
+    font-size:clamp(40px,5.5vw,84px);
+    line-height:1;letter-spacing:-0.035em;font-weight:300;
+    max-width:740px;
+  }
+  h2.section-title em{font-style:italic;color:var(--clay);font-weight:300}
+  .section-aside{max-width:340px;font-size:15px;color:var(--ink-soft);line-height:1.7}
+
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(35,21,16,0.12);border-top:1px solid rgba(35,21,16,0.12);border-bottom:1px solid rgba(35,21,16,0.12)}
+  .service{
+    background:var(--cream);
+    padding:48px 36px;
+    transition:background .4s;
+    position:relative;cursor:pointer;
+    min-height:340px;display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .service:hover{background:var(--bone)}
+  .service-num{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--clay);margin-bottom:20px}
+  .service-title{font-family:'Fraunces',serif;font-size:36px;line-height:1.05;letter-spacing:-0.025em;font-weight:400;margin-bottom:16px}
+  .service-desc{font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:28px}
+  .service-meta{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid rgba(35,21,16,0.15);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .service-meta .price{font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--ink);text-transform:none;letter-spacing:0}
+  .service-arrow{
+    position:absolute;top:36px;right:36px;width:38px;height:38px;border-radius:50%;
+    border:1px solid rgba(35,21,16,0.25);display:flex;align-items:center;justify-content:center;
+    transition:all .35s;
+  }
+  .service:hover .service-arrow{background:var(--clay);border-color:var(--clay);transform:rotate(-45deg)}
+  .service:hover .service-arrow svg{stroke:var(--cream)}
+
+  /* PHILOSOPHY */
+  section.philosophy{
+    padding:140px 48px;background:var(--ink);color:var(--cream);
+    position:relative;overflow:hidden;
+  }
+  .philosophy::before{
+    content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;
+    background:radial-gradient(circle, rgba(183,101,74,0.25), transparent 70%);
+  }
+  .philosophy-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:center;position:relative;z-index:2}
+  .philosophy-img{
+    height:560px;border-radius:300px 300px 12px 12px;overflow:hidden;
+    background:url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80') center/cover;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,0.5);
+  }
+  .philosophy h2{
+    font-family:'Fraunces',serif;
+    font-size:clamp(40px,5vw,72px);
+    line-height:1.05;letter-spacing:-0.03em;font-weight:300;
+    margin-bottom:32px;
+  }
+  .philosophy h2 em{font-style:italic;color:var(--clay)}
+  .philosophy p{font-size:17px;line-height:1.7;color:rgba(239,231,216,0.8);max-width:520px;margin-bottom:24px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px;padding-top:48px;border-top:1px solid rgba(239,231,216,0.2)}
+  .stat-num{font-family:'Fraunces',serif;font-style:italic;font-size:56px;font-weight:300;color:var(--clay);line-height:1;margin-bottom:8px}
+  .stat-label{font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(239,231,216,0.7)}
+
+  /* TESTIMONIAL */
+  section.testimonial{padding:140px 48px;text-align:center;position:relative}
+  .quote-mark{font-family:'Fraunces',serif;font-style:italic;font-size:180px;line-height:0.6;color:var(--clay);margin-bottom:20px;font-weight:300}
+  blockquote{
+    font-family:'Fraunces',serif;font-style:italic;
+    font-size:clamp(28px,3.8vw,52px);line-height:1.2;letter-spacing:-0.02em;
+    font-weight:300;max-width:1000px;margin:0 auto 48px;
+  }
+  blockquote em{font-style:normal;color:var(--clay)}
+  .quote-author{display:flex;align-items:center;justify-content:center;gap:16px}
+  .quote-author img{width:56px;height:56px;border-radius:50%;object-fit:cover}
+  .quote-author .name{font-family:'Fraunces',serif;font-size:18px}
+  .quote-author .role{font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-soft)}
+
+  /* GALLERY */
+  section.gallery{padding:0 0 140px;overflow:hidden}
+  .gallery-strip{display:grid;grid-template-columns:1fr 1.3fr 1fr 1.2fr;gap:16px;padding:0 48px;height:480px}
+  .gallery-item{border-radius:12px;overflow:hidden;position:relative}
+  .gallery-item:nth-child(1){border-radius:240px 240px 12px 12px}
+  .gallery-item:nth-child(3){border-radius:12px 12px 240px 240px;margin-top:60px}
+  .gallery-item:nth-child(2){margin-top:40px}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+  .gallery-item:hover img{transform:scale(1.05)}
+
+  /* CTA / BOOKING */
+  section.booking{padding:140px 48px;background:var(--bone);position:relative;overflow:hidden}
+  .booking::before{
+    content:'❋';position:absolute;font-family:'Fraunces',serif;font-size:520px;
+    color:var(--clay);opacity:0.08;top:-100px;right:-80px;line-height:1;
+  }
+  .booking-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;position:relative;z-index:2}
+  .booking h2{font-family:'Fraunces',serif;font-size:clamp(44px,6vw,88px);line-height:0.98;letter-spacing:-0.035em;font-weight:300;margin-bottom:32px}
+  .booking h2 em{font-style:italic;color:var(--clay)}
+  .booking-info p{font-size:16px;color:var(--ink-soft);line-height:1.7;margin-bottom:36px;max-width:440px}
+  .info-list{list-style:none;display:flex;flex-direction:column;gap:20px}
+  .info-list li{display:flex;gap:18px;align-items:flex-start;font-size:14px}
+  .info-list .icon{width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--cream);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .info-list .lbl{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;display:block}
+  .info-list .val{font-family:'Fraunces',serif;font-size:18px}
+
+  .form{background:var(--cream);padding:48px;border-radius:24px;box-shadow:0 30px 60px -20px rgba(35,21,16,0.15)}
+  .form-field{margin-bottom:24px}
+  .form-field label{display:block;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+  .form-field input, .form-field select, .form-field textarea{
+    width:100%;padding:14px 0;border:none;border-bottom:1px solid rgba(35,21,16,0.2);
+    background:transparent;font-family:'DM Sans',sans-serif;font-size:16px;color:var(--ink);
+    outline:none;transition:border-color .3s;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus{border-bottom-color:var(--clay)}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  button.submit{
+    width:100%;padding:20px;background:var(--ink);color:var(--cream);
+    border:none;border-radius:999px;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;
+    cursor:pointer;transition:all .35s;margin-top:12px;font-family:'DM Sans',sans-serif;
+  }
+  button.submit:hover{background:var(--clay)}
+
+  /* FOOTER */
+  footer{background:var(--ink);color:var(--cream);padding:80px 48px 32px}
+  .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px;padding-bottom:60px;border-bottom:1px solid rgba(239,231,216,0.15)}
+  .footer-brand .logo{color:var(--cream);font-size:32px;margin-bottom:20px;display:block}
+  .footer-brand p{font-size:14px;color:rgba(239,231,216,0.7);line-height:1.6;max-width:280px}
+  .footer-col h4{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:18px;margin-bottom:24px;color:var(--clay)}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+  .footer-col a{color:rgba(239,231,216,0.75);text-decoration:none;font-size:14px;transition:color .3s}
+  .footer-col a:hover{color:var(--clay)}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(239,231,216,0.5);letter-spacing:0.1em}
+  .footer-giant{font-family:'Fraunces',serif;font-size:clamp(120px,22vw,360px);line-height:0.85;color:var(--clay);opacity:0.12;font-weight:300;letter-spacing:-0.05em;margin:60px 0 -40px;text-align:center;font-style:italic}
+
+  /* fade-in */
+  .reveal{opacity:0;transform:translateY(30px);transition:all 1s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:960px){
+    nav{padding:18px 24px}
+    .nav-links{display:none}
+    .hero{padding:120px 24px 60px;grid-template-columns:1fr;gap:60px}
+    .hero-visual{height:480px}
+    section.services, section.philosophy, section.testimonial, section.booking{padding:90px 24px}
+    .services-grid{grid-template-columns:1fr}
+    .philosophy-grid{grid-template-columns:1fr;gap:40px}
+    .philosophy-img{height:380px}
+    .stats{grid-template-columns:1fr;gap:32px}
+    .gallery-strip{grid-template-columns:1fr 1fr;height:auto;gap:12px}
+    .gallery-item{height:280px;margin:0!important;border-radius:12px!important}
+    .booking-inner{grid-template-columns:1fr;gap:48px}
+    .form{padding:32px 24px}
+    .form-row{grid-template-columns:1fr}
+    .footer-top{grid-template-columns:1fr 1fr;gap:40px}
+    .footer-bottom{flex-direction:column;gap:16px}
+    .section-head{flex-direction:column;align-items:flex-start}
+  }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18216761604"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18216761604');
+</script>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Estética<sup>®</sup></div>
+  <div class="nav-links">
+    <a href="#tratamentos">Tratamentos</a>
+    <a href="#filosofia">Filosofia</a>
+    <a href="#galeria">Galeria</a>
+    <a href="#contato">Contato</a>
+  </div>
+  <a href="#contato" class="nav-cta">Agendar</a>
+</nav>
+
+<section class="hero">
+  <div>
+    <div class="hero-tag reveal">Estética Avançada · desde 2018</div>
+    <h1 class="hero-title reveal">Onde a beleza<br>encontra o <em>silêncio</em><br>de um ninho.</h1>
+    <p class="hero-sub reveal">Tratamentos estéticos personalizados num santuário de calma, ciência e refinamento. Cada protocolo desenhado para revelar — nunca esconder — a sua melhor versão.</p>
+    <div class="hero-actions reveal">
+      <a href="#contato" class="btn-primary">
+        Agendar consulta
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M1 6H15M15 6L10 1M15 6L10 11" stroke="currentColor" stroke-width="1.5"/></svg>
+      </a>
+      <a href="#tratamentos" class="btn-ghost">Conhecer tratamentos</a>
+    </div>
+  </div>
+  <div class="hero-visual reveal">
+    <div class="hero-img main"></div>
+    <div class="hero-img accent"></div>
+    <div class="hero-badge">
+      <div>
+        <span class="big">6+</span>
+        <span>anos cuidando<br>da sua pele</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Limpeza de Pele</span>
+    <span>Microagulhamento</span>
+    <span>Bioestimuladores</span>
+    <span>Skinbooster</span>
+    <span>Laser CO₂</span>
+    <span>Drenagem</span>
+    <span>Limpeza de Pele</span>
+    <span>Microagulhamento</span>
+    <span>Bioestimuladores</span>
+    <span>Skinbooster</span>
+    <span>Laser CO₂</span>
+    <span>Drenagem</span>
+  </div>
+</div>
+
+<section class="services" id="tratamentos">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow reveal">Nossos rituais</div>
+      <h2 class="section-title reveal">Tratamentos que<br>respeitam o seu <em>tempo</em><br>e a sua pele.</h2>
+    </div>
+    <p class="section-aside reveal">Protocolos clínicos combinados com toque de spa. Cada sessão começa com escuta atenta e termina com um plano feito sob medida — porque ninguém é igual a ninguém.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service reveal">
+      <div>
+        <div class="service-num">01 · facial</div>
+        <h3 class="service-title">Limpeza<br>de Pele Profunda</h3>
+        <p class="service-desc">Extração delicada, vapor de ozônio e máscara calmante. Devolve o brilho perdido sem agredir.</p>
+      </div>
+      <div class="service-arrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H3M13 1V11" stroke="#231510" stroke-width="1.4"/></svg>
+      </div>
+      <div class="service-meta"><span>60 min</span><span class="price">R$ 280</span></div>
+    </div>
+
+    <div class="service reveal">
+      <div>
+        <div class="service-num">02 · regenerador</div>
+        <h3 class="service-title">Microagulhamento<br>com Drug Delivery</h3>
+        <p class="service-desc">Indução de colágeno com ativos potentes. Para textura, cicatrizes e firmeza.</p>
+      </div>
+      <div class="service-arrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H3M13 1V11" stroke="#231510" stroke-width="1.4"/></svg>
+      </div>
+      <div class="service-meta"><span>90 min</span><span class="price">R$ 650</span></div>
+    </div>
+
+    <div class="service reveal">
+      <div>
+        <div class="service-num">03 · injectables</div>
+        <h3 class="service-title">Bioestimulador<br>de Colágeno</h3>
+        <p class="service-desc">Tecnologia que ativa a produção natural de colágeno. Resultado progressivo e sutil.</p>
+      </div>
+      <div class="service-arrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H3M13 1V11" stroke="#231510" stroke-width="1.4"/></svg>
+      </div>
+      <div class="service-meta"><span>45 min</span><span class="price">R$ 1.890</span></div>
+    </div>
+
+    <div class="service reveal">
+      <div>
+        <div class="service-num">04 · hidratação</div>
+        <h3 class="service-title">Skinbooster<br>com Ácido Hialurônico</h3>
+        <p class="service-desc">Hidratação profunda em camadas. Pele com viço, luminosidade e elasticidade renovados.</p>
+      </div>
+      <div class="service-arrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H3M13 1V11" stroke="#231510" stroke-width="1.4"/></svg>
+      </div>
+      <div class="service-meta"><span>50 min</span><span class="price">R$ 1.200</span></div>
+    </div>
+
+    <div class="service reveal">
+      <div>
+        <div class="service-num">05 · laser</div>
+        <h3 class="service-title">Laser CO₂<br>Fracionado</h3>
+        <p class="service-desc">Tratamento de ouro para renovação celular. Manchas, poros e rugas finas.</p>
+      </div>
+      <div class="service-arrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H3M13 1V11" stroke="#231510" stroke-width="1.4"/></svg>
+      </div>
+      <div class="service-meta"><span>75 min</span><span class="price">R$ 1.450</span></div>
+    </div>
+
+    <div class="service reveal">
+      <div>
+        <div class="service-num">06 · corporal</div>
+        <h3 class="service-title">Drenagem<br>Linfática Manual</h3>
+        <p class="service-desc">Toque preciso para desinchar, desintoxicar e devolver a leveza ao corpo.</p>
+      </div>
+      <div class="service-arrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H3M13 1V11" stroke="#231510" stroke-width="1.4"/></svg>
+      </div>
+      <div class="service-meta"><span>60 min</span><span class="price">R$ 220</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="philosophy" id="filosofia">
+  <div class="philosophy-grid">
+    <div class="philosophy-img reveal"></div>
+    <div>
+      <div class="eyebrow reveal" style="color:var(--clay)">Nossa filosofia</div>
+      <h2 class="reveal">Beleza não é<br>pressa. É <em>cuidado</em><br>repetido no tempo.</h2>
+      <p class="reveal">Acreditamos que o melhor tratamento é aquele que respeita a sua história. Trabalhamos com tecnologia de ponta — mas o que nos diferencia é o olhar humano por trás de cada protocolo.</p>
+      <p class="reveal">Cada cliente recebe um plano único, traçado com base em diagnóstico clínico, estilo de vida e desejo pessoal. Sem fórmulas prontas. Sem promessas impossíveis.</p>
+      <div class="stats reveal">
+        <div>
+          <div class="stat-num">2.4k</div>
+          <div class="stat-label">Clientes ativos</div>
+        </div>
+        <div>
+          <div class="stat-num">98%</div>
+          <div class="stat-label">Taxa de retorno</div>
+        </div>
+        <div>
+          <div class="stat-num">6+</div>
+          <div class="stat-label">Anos de história</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonial">
+  <div class="quote-mark reveal">"</div>
+  <blockquote class="reveal">
+    Saí daqui com a pele <em>diferente</em> e a cabeça em paz. É o único lugar onde sinto que cuidam de mim antes de cuidar do meu rosto.
+  </blockquote>
+  <div class="quote-author reveal">
+    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80" alt="">
+    <div style="text-align:left">
+      <div class="name">Mariana Costa</div>
+      <div class="role">Cliente desde 2021</div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery" id="galeria">
+  <div class="gallery-strip">
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600&q=80" alt=""></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&q=80" alt=""></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=600&q=80" alt=""></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=700&q=80" alt=""></div>
+  </div>
+</section>
+
+<section class="booking" id="contato">
+  <div class="booking-inner">
+    <div class="booking-info">
+      <div class="eyebrow reveal">Vamos conversar</div>
+      <h2 class="reveal">Marque sua<br>primeira <em>visita</em>.</h2>
+      <p class="reveal">A primeira consulta inclui avaliação completa de pele, análise de objetivos e plano personalizado. Sem compromisso de continuar — só com você.</p>
+      <ul class="info-list reveal">
+        <li>
+          <div class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z M12 11a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.6"/></svg>
+          </div>
+          <div>
+            <span class="lbl">Endereço</span>
+            <span class="val">Rua Visconde de Pirajá, 351 · sala 802<br>Ipanema, Rio de Janeiro</span>
+          </div>
+        </li>
+        <li>
+          <div class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.6"/></svg>
+          </div>
+          <div>
+            <span class="lbl">Horário</span>
+            <span class="val">Terça a sábado · 9h às 20h</span>
+          </div>
+        </li>
+        <li>
+          <div class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke="currentColor" stroke-width="1.6"/></svg>
+          </div>
+          <div>
+            <span class="lbl">Contato</span>
+            <span class="val">+55 21 99876 · 5432</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <form class="form reveal" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Recebido — entraremos em contato'; this.querySelector('button').style.background='var(--sage)'">
+      <div class="form-field">
+        <label>Nome completo</label>
+        <input type="text" placeholder="Como podemos chamar você?" required>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>WhatsApp</label>
+          <input type="tel" placeholder="(21) 99999-9999" required>
+        </div>
+        <div class="form-field">
+          <label>E-mail</label>
+          <input type="email" placeholder="seu@email.com" required>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Tratamento de interesse</label>
+        <select>
+          <option>Ainda não sei — quero uma avaliação</option>
+          <option>Limpeza de pele</option>
+          <option>Microagulhamento</option>
+          <option>Bioestimulador</option>
+          <option>Skinbooster</option>
+          <option>Laser CO₂</option>
+          <option>Drenagem linfática</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Mensagem (opcional)</label>
+        <textarea rows="2" placeholder="Conte um pouco sobre seus objetivos"></textarea>
+      </div>
+      <button type="submit" class="submit">Enviar pedido de agendamento</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo">Estética<sup>®</sup></span>
+      <p>Estética avançada num santuário de calma. Onde cada ritual é desenhado para revelar a sua melhor versão.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Tratamentos</h4>
+      <ul>
+        <li><a href="#">Limpeza de pele</a></li>
+        <li><a href="#">Microagulhamento</a></li>
+        <li><a href="#">Bioestimuladores</a></li>
+        <li><a href="#">Laser CO₂</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Espaço</h4>
+      <ul>
+        <li><a href="#">Sobre nós</a></li>
+        <li><a href="#">Equipe</a></li>
+        <li><a href="#">Galeria</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Siga</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">Pinterest</a></li>
+        <li><a href="#">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-giant">estética</div>
+  <div class="footer-bottom">
+    <span>© 2026 Estética · Todos os direitos reservados</span>
+    <span>CRBM 12345 · Dra. Helena Carvalho</span>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){
+        setTimeout(()=>e.target.classList.add('in'), i*60);
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>

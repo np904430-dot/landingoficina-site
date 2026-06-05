@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barbearia Navalha — Corte, Barba & Tradição</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bone:#ece3d2;
+    --bone-2:#f4ecdc;
+    --ink:#181512;
+    --ink-soft:#2a241f;
+    --brass:#bd893b;
+    --brass-bright:#d8a44f;
+    --rust:#9c3a2c;
+    --cream:#fbf6ec;
+    --line:rgba(24,21,18,.16);
+    --font-display:'Anton',sans-serif;
+    --font-serif:'Fraunces',serif;
+    --font-body:'Hanken Grotesk',sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-body);
+    background:var(--bone);
+    color:var(--ink);
+    overflow-x:hidden;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* paper grain overlay */
+  body::before{
+    content:"";
+    position:fixed;inset:0;z-index:9999;pointer-events:none;
+    opacity:.045;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection{background:var(--rust);color:var(--cream)}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+
+  .eyebrow{
+    font-family:var(--font-body);
+    font-weight:700;font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:.7em;color:var(--rust);
+  }
+  .eyebrow::before{content:"";width:30px;height:2px;background:var(--rust)}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:100;
+    border-bottom:1px solid var(--line);
+    background:rgba(236,227,210,.82);
+    backdrop-filter:blur(10px);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:13px}
+  .crest{
+    width:42px;height:42px;border-radius:50%;flex:none;
+    background:var(--ink);color:var(--brass-bright);
+    display:grid;place-items:center;
+    font-family:var(--font-display);font-size:1.05rem;letter-spacing:.04em;
+    border:1.5px solid var(--brass);
+  }
+  .brand b{font-family:var(--font-display);font-size:1.32rem;letter-spacing:.05em;line-height:.9}
+  .brand span{display:block;font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-top:3px}
+  nav.links{display:flex;gap:34px;align-items:center}
+  nav.links a{font-size:.82rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;position:relative;padding:4px 0}
+  nav.links a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--rust);transition:width .3s ease}
+  nav.links a:hover::after{width:100%}
+  .btn{
+    font-family:var(--font-body);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;
+    padding:13px 24px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;
+    background:var(--ink);color:var(--cream);transition:transform .2s ease,background .25s ease;
+  }
+  .btn:hover{background:var(--rust);transform:translateY(-2px)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:var(--cream)}
+  .nav .btn{padding:11px 20px}
+  .menu-toggle{display:none}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;padding:72px 0 90px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+  .hero-left{position:relative;z-index:2}
+  .hero h1{
+    font-family:var(--font-display);
+    font-size:clamp(3.6rem,12vw,9.5rem);
+    line-height:.84;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);
+  }
+  .hero h1 .out{
+    -webkit-text-stroke:2px var(--ink);color:transparent;
+    display:block;
+  }
+  .hero h1 .serif{
+    font-family:var(--font-serif);font-style:italic;font-weight:500;
+    font-size:clamp(2rem,6vw,4.6rem);letter-spacing:-.01em;text-transform:none;color:var(--rust);
+    -webkit-text-stroke:0;
+  }
+  .hero p.lead{
+    max-width:430px;font-size:1.06rem;color:var(--ink-soft);margin:26px 0 32px;
+  }
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .since{
+    margin-top:46px;display:flex;gap:28px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:24px;
+  }
+  .stat b{font-family:var(--font-display);font-size:2rem;display:block;line-height:1;letter-spacing:.02em}
+  .stat span{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+
+  /* barber pole */
+  .pole-col{display:flex;align-items:stretch;justify-content:center}
+  .pole{
+    position:relative;width:78px;height:430px;align-self:center;
+    border-radius:40px;
+    box-shadow:0 24px 50px rgba(24,21,18,.32);
+  }
+  .pole .cap{position:absolute;left:50%;transform:translateX(-50%);width:96px;height:30px;background:var(--ink);border-radius:8px;z-index:3;border:1.5px solid var(--brass)}
+  .pole .cap.top{top:-22px}
+  .pole .cap.bottom{bottom:-22px}
+  .pole .glass{
+    position:absolute;inset:0;border-radius:40px;overflow:hidden;
+    border:3px solid var(--ink);
+    background:repeating-linear-gradient(
+      -55deg,
+      var(--rust) 0 18px,
+      var(--cream) 18px 36px,
+      var(--ink) 36px 54px,
+      var(--cream) 54px 72px
+    );
+    background-size:200% 200%;
+    animation:spin 3.4s linear infinite;
+  }
+  .pole .glass::after{
+    content:"";position:absolute;inset:0;border-radius:40px;
+    background:linear-gradient(90deg,rgba(255,255,255,.45),transparent 35%,transparent 65%,rgba(0,0,0,.28));
+  }
+  @keyframes spin{to{background-position:0 -144px}}
+
+  /* big ghost word behind */
+  .ghost-word{
+    position:absolute;right:-3%;bottom:-6%;z-index:0;
+    font-family:var(--font-display);font-size:clamp(8rem,26vw,24rem);
+    color:var(--bone-2);line-height:.8;letter-spacing:.02em;pointer-events:none;user-select:none;
+    text-transform:uppercase;
+  }
+
+  /* marquee strip */
+  .strip{background:var(--ink);color:var(--cream);overflow:hidden;border-top:2px solid var(--brass);border-bottom:2px solid var(--brass)}
+  .marquee{display:flex;white-space:nowrap;animation:slide 26s linear infinite}
+  .marquee span{
+    font-family:var(--font-display);font-size:1.35rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:16px 0;display:flex;align-items:center;
+  }
+  .marquee span i{color:var(--brass-bright);margin:0 26px;font-style:normal}
+  @keyframes slide{to{transform:translateX(-50%)}}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:104px 0}
+  .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:54px;flex-wrap:wrap}
+  .sec-head h2{
+    font-family:var(--font-display);font-size:clamp(2.4rem,6vw,4.4rem);
+    line-height:.92;text-transform:uppercase;letter-spacing:.01em;max-width:12ch;
+  }
+  .sec-head h2 em{font-family:var(--font-serif);font-style:italic;font-weight:500;color:var(--rust);text-transform:none}
+  .sec-head p{max-width:340px;color:var(--ink-soft);font-size:1rem}
+
+  /* ---------- SERVICES ---------- */
+  #servicos{background:var(--bone-2)}
+  .menu-list{border-top:1px solid var(--line)}
+  .svc{
+    display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:baseline;
+    padding:26px 8px;border-bottom:1px solid var(--line);position:relative;transition:padding .3s ease;
+  }
+  .svc::before{content:"";position:absolute;left:0;top:0;height:100%;width:0;background:var(--ink);z-index:0;transition:width .35s cubic-bezier(.6,0,.2,1)}
+  .svc>*{position:relative;z-index:1;transition:color .3s ease}
+  .svc:hover{padding-left:26px}
+  .svc:hover::before{width:100%}
+  .svc:hover .svc-name,.svc:hover .svc-desc,.svc:hover .svc-price,.svc:hover .svc-num{color:var(--cream)}
+  .svc:hover .svc-price{color:var(--brass-bright)}
+  .svc-num{font-family:var(--font-display);font-size:1.1rem;color:var(--brass);width:42px}
+  .svc-name{font-family:var(--font-serif);font-size:1.55rem;font-weight:600;line-height:1.1}
+  .svc-desc{font-size:.9rem;color:var(--ink-soft);margin-top:4px}
+  .svc-price{font-family:var(--font-display);font-size:1.7rem;letter-spacing:.02em;white-space:nowrap}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;align-items:center}
+  .about-visual{
+    position:relative;aspect-ratio:4/5;background:var(--ink);overflow:hidden;
+    border:1px solid var(--ink);
+  }
+  .about-visual .scissors{
+    position:absolute;inset:0;display:grid;place-items:center;color:var(--brass);opacity:.9;
+  }
+  .about-visual .tag{
+    position:absolute;left:22px;bottom:22px;color:var(--cream);
+    font-family:var(--font-serif);font-style:italic;font-size:1.2rem;
+  }
+  .about-visual .frame{position:absolute;inset:16px;border:1.5px solid rgba(216,164,79,.5)}
+  .about-text h2{font-family:var(--font-display);font-size:clamp(2.2rem,5vw,3.6rem);line-height:.95;text-transform:uppercase;margin-bottom:22px}
+  .about-text h2 em{font-family:var(--font-serif);font-style:italic;color:var(--rust);text-transform:none;font-weight:500}
+  .about-text p{color:var(--ink-soft);margin-bottom:18px;font-size:1.04rem}
+  .about-sign{font-family:var(--font-serif);font-style:italic;font-size:1.5rem;color:var(--ink);margin-top:28px}
+
+  /* ---------- TEAM ---------- */
+  #equipe{background:var(--ink);color:var(--cream)}
+  #equipe .sec-head h2{color:var(--cream)}
+  #equipe .sec-head p{color:rgba(251,246,236,.6)}
+  #equipe .eyebrow{color:var(--brass-bright)}
+  #equipe .eyebrow::before{background:var(--brass-bright)}
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .barber{border:1px solid rgba(216,164,79,.3);padding:30px 26px;transition:background .3s ease,transform .3s ease}
+  .barber:hover{background:rgba(216,164,79,.07);transform:translateY(-6px)}
+  .avatar{
+    width:84px;height:84px;border-radius:50%;display:grid;place-items:center;
+    font-family:var(--font-display);font-size:1.8rem;color:var(--ink);background:var(--brass);
+    margin-bottom:22px;border:2px solid var(--brass-bright);
+  }
+  .barber h3{font-family:var(--font-serif);font-size:1.5rem;font-weight:600;margin-bottom:4px}
+  .barber .role{color:var(--brass-bright);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:14px}
+  .barber p{color:rgba(251,246,236,.62);font-size:.92rem}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .quotes{display:grid;grid-template-columns:repeat(2,1fr);gap:26px}
+  .quote{padding:36px 32px;border:1px solid var(--line);background:var(--cream);position:relative}
+  .quote .mark{font-family:var(--font-serif);font-size:4rem;color:var(--brass);line-height:.6;position:absolute;top:24px;right:26px;opacity:.5}
+  .quote p{font-family:var(--font-serif);font-size:1.22rem;font-style:italic;line-height:1.45;margin-bottom:22px}
+  .quote .who{display:flex;align-items:center;gap:13px}
+  .quote .who b{font-weight:700;font-size:.95rem}
+  .quote .who span{font-size:.78rem;color:var(--ink-soft);letter-spacing:.1em;text-transform:uppercase}
+  .stars{color:var(--rust);letter-spacing:3px;font-size:.85rem;margin-bottom:14px}
+
+  /* ---------- VISIT / CTA ---------- */
+  #visite{background:var(--bone-2)}
+  .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+  .hours-row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line);font-size:1rem}
+  .hours-row b{font-weight:700}
+  .hours-row.closed{color:var(--ink-soft)}
+  .hours-row .open{color:var(--rust);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.78rem}
+  .info-block{margin-bottom:28px}
+  .info-block .lbl{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:6px}
+  .info-block .val{font-family:var(--font-serif);font-size:1.35rem;font-weight:600}
+  .cta-card{background:var(--ink);color:var(--cream);padding:46px 40px;display:flex;flex-direction:column;justify-content:center}
+  .cta-card h3{font-family:var(--font-display);font-size:2.4rem;line-height:.95;text-transform:uppercase;margin-bottom:14px}
+  .cta-card h3 em{font-family:var(--font-serif);font-style:italic;color:var(--brass-bright);text-transform:none;font-weight:500}
+  .cta-card p{color:rgba(251,246,236,.7);margin-bottom:28px}
+  .cta-card .btn{background:var(--brass);color:var(--ink);align-self:flex-start}
+  .cta-card .btn:hover{background:var(--brass-bright);transform:translateY(-2px)}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:var(--cream);padding:70px 0 34px}
+  .foot-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;align-items:flex-start;padding-bottom:46px;border-bottom:1px solid rgba(251,246,236,.14)}
+  .foot-brand b{font-family:var(--font-display);font-size:2rem;letter-spacing:.05em}
+  .foot-brand p{color:rgba(251,246,236,.6);max-width:280px;margin-top:12px;font-size:.95rem}
+  .foot-cols{display:flex;gap:64px;flex-wrap:wrap}
+  .foot-col h4{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass-bright);margin-bottom:16px}
+  .foot-col a{display:block;color:rgba(251,246,236,.78);font-size:.95rem;margin-bottom:10px;transition:color .2s}
+  .foot-col a:hover{color:var(--brass-bright)}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:24px;font-size:.82rem;color:rgba(251,246,236,.5)}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:900px){
+    nav.links{display:none}
+    .menu-toggle{display:inline-flex}
+    .hero-grid{grid-template-columns:1fr}
+    .pole-col{order:-1;justify-content:flex-start}
+    .pole{height:300px;width:60px}
+    .about-grid{grid-template-columns:1fr;gap:40px}
+    .team-grid{grid-template-columns:1fr}
+    .quotes{grid-template-columns:1fr}
+    .visit-grid{grid-template-columns:1fr;gap:36px}
+    .ghost-word{display:none}
+  }
+  @media(max-width:560px){
+    .svc{grid-template-columns:auto 1fr;gap:14px}
+    .svc-price{grid-column:2;justify-self:start;margin-top:8px}
+    .svc-num{display:none}
+    section{padding:74px 0}
+  }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18216761604"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18216761604');
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="crest">BN</div>
+      <div><b>BARBEARIA</b><span>Navalha · Est. 2014</span></div>
+    </div>
+    <nav class="links">
+      <a href="#servicos">Serviços</a>
+      <a href="#sobre">A Casa</a>
+      <a href="#equipe">Barbeiros</a>
+      <a href="#visite">Visite</a>
+    </nav>
+    <a href="#visite" class="btn">Agendar</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="ghost-word">NAVALHA</div>
+  <div class="wrap hero-grid">
+    <div class="hero-left">
+      <span class="eyebrow reveal">Barbearia clássica no coração da cidade</span>
+      <h1 class="reveal" style="margin-top:20px">
+        Corte.<br>
+        <span class="out">Barba.</span>
+        <span class="serif">& tradição.</span>
+      </h1>
+      <p class="lead reveal">Toalha quente, navalha afiada e mão de mestre. Há mais de uma década entregando o corte que dura a semana inteira — sem pressa, sem atalho.</p>
+      <div class="hero-cta reveal">
+        <a href="#visite" class="btn">Marcar horário</a>
+        <a href="#servicos" class="btn ghost">Ver serviços</a>
+      </div>
+      <div class="since reveal">
+        <div class="stat"><b>10+</b><span>anos de ofício</span></div>
+        <div class="stat"><b>4.9</b><span>★ avaliação</span></div>
+        <div class="stat"><b>12k</b><span>cortes feitos</span></div>
+      </div>
+    </div>
+    <div class="pole-col reveal">
+      <div class="pole">
+        <div class="cap top"></div>
+        <div class="glass"></div>
+        <div class="cap bottom"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="strip">
+  <div class="marquee">
+    <span>CORTE NA TESOURA <i>✶</i> BARBA NA NAVALHA <i>✶</i> TOALHA QUENTE <i>✶</i> PEZINHO <i>✶</i> HIDRATAÇÃO <i>✶</i> CAFÉ POR CONTA DA CASA <i>✶</i></span>
+    <span>CORTE NA TESOURA <i>✶</i> BARBA NA NAVALHA <i>✶</i> TOALHA QUENTE <i>✶</i> PEZINHO <i>✶</i> HIDRATAÇÃO <i>✶</i> CAFÉ POR CONTA DA CASA <i>✶</i></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="servicos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>O cardápio da <em>casa</em></h2>
+      <p>Preços honestos, tempo de qualidade. Cada serviço inclui consulta de estilo e finalização.</p>
+    </div>
+    <div class="menu-list">
+      <div class="svc reveal">
+        <div class="svc-num">01</div>
+        <div><div class="svc-name">Corte Clássico</div><div class="svc-desc">Tesoura e máquina, lavagem e styling sob medida.</div></div>
+        <div class="svc-price">R$ 50</div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">02</div>
+        <div><div class="svc-name">Barba Terapia</div><div class="svc-desc">Toalha quente, navalha, óleo e bálsamo.</div></div>
+        <div class="svc-price">R$ 40</div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">03</div>
+        <div><div class="svc-name">Combo Cavalheiro</div><div class="svc-desc">Corte completo + barba terapia. O ritual inteiro.</div></div>
+        <div class="svc-price">R$ 80</div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">04</div>
+        <div><div class="svc-name">Pezinho & Acabamento</div><div class="svc-desc">Aquele retoque rápido entre os cortes.</div></div>
+        <div class="svc-price">R$ 20</div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">05</div>
+        <div><div class="svc-name">Corte Infantil</div><div class="svc-desc">Paciência, brinde e o primeiro grande corte.</div></div>
+        <div class="svc-price">R$ 45</div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">06</div>
+        <div><div class="svc-name">Hidratação & Tônico</div><div class="svc-desc">Tratamento capilar para couro e fios.</div></div>
+        <div class="svc-price">R$ 60</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="sobre">
+  <div class="wrap about-grid">
+    <div class="about-visual reveal">
+      <div class="frame"></div>
+      <div class="scissors">
+        <svg width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+          <line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>
+        </svg>
+      </div>
+      <div class="tag">"o detalhe é o ofício"</div>
+    </div>
+    <div class="about-text reveal">
+      <span class="eyebrow">A Casa</span>
+      <h2 style="margin-top:18px">Um lugar para <em>parar</em><br>o relógio.</h2>
+      <p>A Barbearia Navalha nasceu de uma ideia simples: trazer de volta o ritual da barbearia de antigamente, onde o homem senta na cadeira e o mundo lá fora pode esperar.</p>
+      <p>Madeira, couro, música boa e o cheiro de bálsamo no ar. Aqui não existe corte de esteira — existe conversa, café e o cuidado de quem trata cada cliente como o único da agenda.</p>
+      <div class="about-sign">— Seu Antônio, mestre barbeiro</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="equipe">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" style="position:absolute"></span>
+      <h2>Mãos que <em>esculpem</em></h2>
+      <p>Profissionais com formação, prática e um respeito raro pelo ofício.</p>
+    </div>
+    <div class="team-grid">
+      <div class="barber reveal">
+        <div class="avatar">AT</div>
+        <h3>Antônio Reis</h3>
+        <div class="role">Mestre · Navalha</div>
+        <p>Trinta anos de estrada. Especialista em barba clássica e degradê na tesoura.</p>
+      </div>
+      <div class="barber reveal">
+        <div class="avatar">MC</div>
+        <h3>Marcos Lima</h3>
+        <div class="role">Sênior · Fade</div>
+        <p>O rei do disfarçado e dos contornos milimétricos. Mão firme, olho de águia.</p>
+      </div>
+      <div class="barber reveal">
+        <div class="avatar">RV</div>
+        <h3>Rafa Vieira</h3>
+        <div class="role">Estilo · Moderno</div>
+        <p>Cortes autorais e tendências. Traz a rua e a referência pra dentro da cadeira.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="depoimentos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Na palavra de <em>quem senta</em></h2>
+      <p>A régua é alta — e a clientela não deixa baixar.</p>
+    </div>
+    <div class="quotes">
+      <div class="quote reveal">
+        <div class="mark">”</div>
+        <div class="stars">★★★★★</div>
+        <p>Achei que era exagero, mas o combo com toalha quente é outro nível. Saí de lá outro homem. Virei cliente fixo na primeira visita.</p>
+        <div class="who"><b>Bruno Carvalho</b><span>Cliente há 3 anos</span></div>
+      </div>
+      <div class="quote reveal">
+        <div class="mark">”</div>
+        <div class="stars">★★★★★</div>
+        <p>Ambiente impecável, café bom e o Marcos entende exatamente o que eu quero sem eu precisar explicar. Não troco por nada.</p>
+        <div class="who"><b>Diego Santos</b><span>Cliente há 5 anos</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISIT -->
+<section id="visite">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Passe na <em>cadeira</em></h2>
+      <p>Trabalhamos com hora marcada para você não esperar. Encaixes conforme a agenda.</p>
+    </div>
+    <div class="visit-grid">
+      <div class="reveal">
+        <div class="info-block">
+          <div class="lbl">Endereço</div>
+          <div class="val">Rua das Laranjeiras, 248 — Rio de Janeiro / RJ</div>
+        </div>
+        <div class="info-block">
+          <div class="lbl">Contato</div>
+          <div class="val">(21) 99999-0000</div>
+        </div>
+        <div style="margin-top:30px">
+          <div class="hours-row"><b>Terça – Sexta</b><span class="open">09h — 20h</span></div>
+          <div class="hours-row"><b>Sábado</b><span class="open">09h — 18h</span></div>
+          <div class="hours-row closed"><b>Domingo</b><span>Fechado</span></div>
+          <div class="hours-row closed"><b>Segunda</b><span>Fechado</span></div>
+        </div>
+      </div>
+      <div class="cta-card reveal">
+        <h3>Bora marcar<br>seu <em>horário?</em></h3>
+        <p>Chama no WhatsApp, escolhe o barbeiro e o melhor dia. A cadeira tá esperando.</p>
+        <a href="#" class="btn">Agendar no WhatsApp →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <b>BARBEARIA NAVALHA</b>
+        <p>Corte, barba e tradição desde 2014. O ofício de bem servir, uma cadeira de cada vez.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>Navegar</h4>
+          <a href="#servicos">Serviços</a>
+          <a href="#sobre">A Casa</a>
+          <a href="#equipe">Barbeiros</a>
+          <a href="#visite">Visite</a>
+        </div>
+        <div class="foot-col">
+          <h4>Social</h4>
+          <a href="#">Instagram</a>
+          <a href="#">TikTok</a>
+          <a href="#">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Barbearia Navalha. Todos os direitos reservados.</span>
+      <span>Feito com navalha afiada.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+  },{threshold:.14});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay=(i%6*0.06)+'s';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
