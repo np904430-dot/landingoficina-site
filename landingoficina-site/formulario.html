@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitação de Serviços</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 640px;
+            padding: 40px 24px;
+            margin: 0 auto;
+        }
+
+        /* Tela inicial */
+        .welcome-screen {
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .logo {
+            margin-bottom: 24px;
+        }
+
+        .logo-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 42px;
+            font-weight: 400;
+            color: #1a1a1a;
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
+
+        .logo-text .accent {
+            color: #e8613a;
+            font-weight: 700;
+        }
+
+        .welcome-screen h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .welcome-screen .subtitle {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            max-width: 420px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .welcome-screen .info {
+            font-size: 13px;
+            color: #999;
+            margin-top: 16px;
+        }
+
+        /* Barra de progresso */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #e8613a;
+            transition: width 0.4s ease;
+            z-index: 100;
+        }
+
+        /* Steps */
+        .step {
+            display: none;
+            animation: slideIn 0.4s ease;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #e8613a;
+            margin-bottom: 8px;
+        }
+
+        .step-number .arrow {
+            color: #ccc;
+            font-size: 12px;
+        }
+
+        .step h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .step h2 .required {
+            color: #e8613a;
+            margin-left: 2px;
+        }
+
+        .step .description {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 24px;
+        }
+
+        /* Radio options */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 15px;
+        }
+
+        .radio-option:hover {
+            border-color: #e8613a;
+            background: #fef7f5;
+        }
+
+        .radio-option.selected {
+            border-color: #e8613a;
+            background: #fef7f5;
+        }
+
+        .radio-option .radio-circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .radio-option.selected .radio-circle {
+            border-color: #e8613a;
+        }
+
+        .radio-option.selected .radio-circle::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: #e8613a;
+            border-radius: 50%;
+        }
+
+        /* Select options (com letras) */
+        .select-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .select-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 15px;
+        }
+
+        .select-option:hover {
+            border-color: #e8613a;
+            background: #fef7f5;
+        }
+
+        .select-option.selected {
+            border-color: #e8613a;
+            background: #fef7f5;
+        }
+
+        .select-option .letter {
+            width: 26px;
+            height: 26px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .select-option.selected .letter {
+            border-color: #e8613a;
+            color: #e8613a;
+        }
+
+        /* Dropdown */
+        .dropdown-wrapper {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .dropdown-trigger {
+            width: 100%;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 2px solid #e8613a;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            outline: none;
+        }
+
+        .dropdown-trigger .placeholder {
+            color: #999;
+        }
+
+        .dropdown-trigger .arrow-down {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            z-index: 10;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .dropdown-menu.open {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 18px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.15s ease;
+        }
+
+        .dropdown-item:hover {
+            background: #fef7f5;
+            color: #e8613a;
+        }
+
+        .dropdown-item.selected {
+            background: #fef7f5;
+            color: #e8613a;
+        }
+
+        /* Text inputs */
+        .text-input {
+            width: 100%;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 2px solid #e8613a;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            outline: none;
+            background: transparent;
+            margin-bottom: 24px;
+        }
+
+        .text-input::placeholder {
+            color: #999;
+        }
+
+        textarea.text-input {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: #e8613a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #d4542f;
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .enter-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 12px;
+            font-size: 13px;
+            color: #bbb;
+        }
+
+        .enter-hint kbd {
+            padding: 2px 6px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Navigation */
+        .nav-arrows {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-arrow {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.15s ease;
+        }
+
+        .nav-arrow:hover {
+            border-color: #e8613a;
+            color: #e8613a;
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Progress dots */
+        .progress-dots {
+            position: fixed;
+            bottom: 28px;
+            right: 32px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .dot.completed {
+            background: #e8613a;
+        }
+
+        .dot.current {
+            width: 20px;
+            border-radius: 4px;
+            background: #e8613a;
+        }
+
+        /* Step counter */
+        .step-counter {
+            position: fixed;
+            top: 16px;
+            right: 24px;
+            font-size: 13px;
+            color: #bbb;
+        }
+
+        /* Tela de revisão */
+        .review-screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .review-screen h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .review-screen .review-subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 32px;
+        }
+
+        .review-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .review-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .review-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .review-value {
+            font-size: 15px;
+            color: #1a1a1a;
+        }
+
+        .review-actions {
+            margin-top: 32px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: transparent;
+            color: #666;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: #999;
+            color: #333;
+        }
+
+        /* Tela de sucesso */
+        .success-screen {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            background: #e8613a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 32px;
+            color: #fff;
+        }
+
+        .success-screen h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .success-screen p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Validation */
+        .error-msg {
+            color: #e8613a;
+            font-size: 13px;
+            margin-top: -16px;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .error-msg.show {
+            display: flex;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .form-container {
+                padding: 32px 20px;
+            }
+            .step h2 {
+                font-size: 20px;
+            }
+            .welcome-screen h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width: 0%"></div>
+<div class="step-counter" id="stepCounter" style="display:none"></div>
+
+<div class="form-container">
+
+    <!-- TELA INICIAL -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="logo">
+            <div class="logo-text">Land<span class="accent">i</span>ng page</div>
+        </div>
+        <h1>Solicitação de Serviços</h1>
+        <p class="subtitle">Este formulário nos permite avaliar se existe alinhamento entre o seu momento e a nossa metodologia. Analisaremos sua demanda com atenção e retornaremos em até 24 horas com os próximos passos.</p>
+        <button class="btn" onclick="startForm()">Começar &rarr;</button>
+        <p class="info">8 perguntas &middot; Menos de 2 min</p>
+    </div>
+
+    <!-- STEP 1: Tipo de projeto -->
+    <div class="step" id="step1">
+        <div class="step-number">1 <span class="arrow">&rarr;</span></div>
+        <h2>Tipo de projeto<span class="required">*</span></h2>
+        <div class="radio-group" id="tipoProjeto">
+            <div class="radio-option" onclick="selectRadio(this, 'tipoProjeto')">
+                <div class="radio-circle"></div>
+                <span>Landing page / funil</span>
+            </div>
+        </div>
+        <div class="error-msg" id="error1">&#9432; Selecione uma opção</div>
+        <button class="btn" onclick="nextStep(1)">OK &#10004;</button>
+        <span class="enter-hint">ou <kbd>Enter &crarr;</kbd></span>
+    </div>
+
+    <!-- STEP 2: Estágio -->
+    <div class="step" id="step2">
+        <div class="step-number">2 <span class="arrow">&rarr;</span></div>
+        <h2>Estágio<span class="required">*</span></h2>
+        <div class="select-group" id="estagio">
+            <div class="select-option" onclick="selectOption(this, 'estagio')">
+                <div class="letter">A</div>
+                <span>Ideia inicial</span>
+            </div>
+            <div class="select-option" onclick="selectOption(this, 'estagio')">
+                <div class="letter">B</div>
+                <span>Já validado, preciso estruturar</span>
+            </div>
+            <div class="select-option" onclick="selectOption(this, 'estagio')">
+                <div class="letter">C</div>
+                <span>Já tenho algo rodando e quero evoluir</span>
+            </div>
+            <div class="select-option" onclick="selectOption(this, 'estagio')">
+                <div class="letter">D</div>
+                <span>Já faturo e quero escalar</span>
+            </div>
+        </div>
+        <div class="error-msg" id="error2">&#9432; Selecione uma opção</div>
+        <button class="btn" onclick="nextStep(2)">OK &#10004;</button>
+        <span class="enter-hint">ou <kbd>Enter &crarr;</kbd></span>
+    </div>
+
+    <!-- STEP 3: Sobre o projeto -->
+    <div class="step" id="step3">
+        <div class="step-number">3 <span class="arrow">&rarr;</span></div>
+        <h2>Sobre o projeto<span class="required">*</span></h2>
+        <p class="description">Descreva brevemente seu projeto</p>
+        <textarea class="text-input" id="sobreProjeto" placeholder="Digite sua resposta aqui..." rows="3"></textarea>
+        <div class="error-msg" id="error3">&#9432; Este campo é obrigatório</div>
+        <button class="btn" onclick="nextStep(3)">OK &#10004;</button>
+        <span class="enter-hint">ou <kbd>Enter &crarr;</kbd></span>
+    </div>
+
+    <!-- STEP 4: Orçamento -->
+    <div class="step" id="step4">
+        <div class="step-number">4 <span class="arrow">&rarr;</span></div>
+        <h2>Orçamento<span class="required">*</span></h2>
+        <div class="dropdown-wrapper">
+            <div class="dropdown-trigger" id="dropdownTrigger" onclick="toggleDropdown()">
+                <span class="placeholder" id="dropdownLabel">Qual o orçamento disponível para este projeto?</span>
+                <span class="arrow-down">&#9662;</span>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-item" onclick="selectDropdown('R$ 1.500 a R$ 3.000')">R$ 1.500 a R$ 3.000</div>
+                <div class="dropdown-item" onclick="selectDropdown('R$ 3.000 a R$ 6.000')">R$ 3.000 a R$ 6.000</div>
+                <div class="dropdown-item" onclick="selectDropdown('R$ 6.000 a R$ 10.000')">R$ 6.000 a R$ 10.000</div>
+                <div class="dropdown-item" onclick="selectDropdown('R$ 10.000 a R$ 20.000')">R$ 10.000 a R$ 20.000</div>
+                <div class="dropdown-item" onclick="selectDropdown('Acima de R$ 20.000')">Acima de R$ 20.000</div>
+            </div>
+        </div>
+        <div class="error-msg" id="error4">&#9432; Selecione uma opção</div>
+        <button class="btn" onclick="nextStep(4)">OK &#10004;</button>
+        <span class="enter-hint">ou <kbd>Enter &crarr;</kbd></span>
+    </div>
+
+    <!-- STEP 5: Segmento -->
+    <div class="step" id="step5">
+        <div class="step-number">5 <span class="arrow">&rarr;</span></div>
+        <h2>Segmento<span class="required">*</span></h2>
+        <input type="text" class="text-input" id="segmento" placeholder="Qual o segmento da empresa?">
+        <div class="error-msg" id="error5">&#9432; Este campo é obrigatório</div>
+        <button class="btn" onclick="nextStep(5)">OK &#10004;</button>
+        <span class="enter-hint">ou <kbd>Enter &crarr;</kbd></span>
+    </div>
+
+    <!-- STEP 6: Nome -->
+    <div class="step" id="step6">
+        <div class="step-number">6 <span class="arrow">&rarr;</span></div>
+        <h2>Nome<span class="required">*</span></h2>
+        <input type="text" class="text-input" id="nome" placeholder="Informe seu nome">
+        <div class="error-msg" id="error6">&#9432; Este campo é obrigatório</div>
+        <button class="btn" onclick="nextStep(6)">OK &#10004;</button>
+        <span class="enter-hint">ou <kbd>Enter &crarr;</kbd></span>
+    </div>
+
+    <!-- STEP 7: Whatsapp -->
+    <div class="step" id="step7">
+        <div class="step-number">7 <span class="arrow">&rarr;</span></div>
+        <h2>Whatsapp<span class="required">*</span></h2>
+        <input type="tel" class="text-input" id="whatsapp" placeholder="(00) 00000-0000">
+        <div class="error-msg" id="error7">&#9432; Este campo é obrigatório</div>
+        <button class="btn" onclick="nextStep(7)">OK &#10004;</button>
+        <span class="enter-hint">ou <kbd>Enter &crarr;</kbd></span>
+    </div>
+
+    <!-- STEP 8: E-mail -->
+    <div class="step" id="step8">
+        <div class="step-number">8 <span class="arrow">&rarr;</span></div>
+        <h2>E-mail</h2>
+        <input type="email" class="text-input" id="email" placeholder="Seu melhor email">
+        <button class="btn" onclick="showReview()">Revisar &#10004;</button>
+        <span class="enter-hint">ou <kbd>Enter &crarr;</kbd></span>
+    </div>
+
+    <!-- TELA DE REVISÃO -->
+    <div class="review-screen" id="reviewScreen">
+        <h2>Revise suas respostas</h2>
+        <p class="review-subtitle">Confira os dados antes de enviar</p>
+        <div id="reviewContent"></div>
+        <div class="review-actions">
+            <button class="btn" onclick="submitForm()">Enviar &#10004;</button>
+            <button class="btn-secondary" onclick="editForm()">Editar</button>
+        </div>
+    </div>
+
+    <!-- TELA DE SUCESSO -->
+    <div class="success-screen" id="successScreen">
+        <div class="success-icon">&#10004;</div>
+        <h2>Proposta enviada para o Nicolas! &#127881;</h2>
+        <p>Recebemos a sua solicitação com sucesso. O Nicolas vai analisar tudo e retornar em até 24 horas com os próximos passos. Obrigado!</p>
+    </div>
+</div>
+
+<!-- Navigation arrows -->
+<div class="nav-arrows" id="navArrows" style="display:none">
+    <button class="nav-arrow" id="btnPrev" onclick="prevStep()" disabled>&uarr;</button>
+    <button class="nav-arrow" id="btnNext" onclick="goNext()">&darr;</button>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-dots" id="progressDots" style="display:none">
+    <div class="dot" id="dot1"></div>
+    <div class="dot" id="dot2"></div>
+    <div class="dot" id="dot3"></div>
+    <div class="dot" id="dot4"></div>
+    <div class="dot" id="dot5"></div>
+    <div class="dot" id="dot6"></div>
+    <div class="dot" id="dot7"></div>
+    <div class="dot" id="dot8"></div>
+    <span id="progressPercent">0%</span>
+</div>
+
+<script>
+    let currentStep = 0;
+    const totalSteps = 8;
+    const formData = {};
+
+    function startForm() {
+        document.getElementById('welcomeScreen').style.display = 'none';
+        document.getElementById('navArrows').style.display = 'flex';
+        document.getElementById('progressDots').style.display = 'flex';
+        document.getElementById('stepCounter').style.display = 'block';
+        currentStep = 1;
+        showStep(1);
+    }
+
+    function showStep(n) {
+        for (let i = 1; i <= totalSteps; i++) {
+            document.getElementById('step' + i).classList.remove('active');
+        }
+        document.getElementById('step' + n).classList.add('active');
+        document.getElementById('stepCounter').textContent = n + ' de ' + totalSteps;
+        document.getElementById('btnPrev').disabled = (n === 1);
+        updateProgress();
+
+        const input = document.getElementById('step' + n).querySelector('input, textarea');
+        if (input) setTimeout(() => input.focus(), 100);
+    }
+
+    function updateProgress() {
+        const answered = Object.keys(formData).length;
+        const pct = Math.round((answered / totalSteps) * 100);
+        document.getElementById('progressBar').style.width = pct + '%';
+        document.getElementById('progressPercent').textContent = pct + '%';
+
+        for (let i = 1; i <= totalSteps; i++) {
+            const dot = document.getElementById('dot' + i);
+            dot.className = 'dot';
+            if (i < currentStep) dot.classList.add('completed');
+            if (i === currentStep) dot.classList.add('current');
+        }
+    }
+
+    function selectRadio(el, group) {
+        document.querySelectorAll('#' + group + ' .radio-option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        formData[group] = el.querySelector('span').textContent;
+    }
+
+    function selectOption(el, group) {
+        document.querySelectorAll('#' + group + ' .select-option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        formData[group] = el.querySelector('span').textContent;
+    }
+
+    function toggleDropdown() {
+        document.getElementById('dropdownMenu').classList.toggle('open');
+    }
+
+    function selectDropdown(value) {
+        formData.orcamento = value;
+        const label = document.getElementById('dropdownLabel');
+        label.textContent = value;
+        label.classList.remove('placeholder');
+        document.getElementById('dropdownMenu').classList.remove('open');
+
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.classList.toggle('selected', item.textContent === value);
+        });
+    }
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown-wrapper')) {
+            document.getElementById('dropdownMenu').classList.remove('open');
+        }
+    });
+
+    function validate(step) {
+        const errorEl = document.getElementById('error' + step);
+        if (errorEl) errorEl.classList.remove('show');
+
+        switch(step) {
+            case 1:
+                if (!formData.tipoProjeto) {
+                    errorEl.classList.add('show');
+                    return false;
+                }
+                break;
+            case 2:
+                if (!formData.estagio) {
+                    errorEl.classList.add('show');
+                    return false;
+                }
+                break;
+            case 3:
+                const sobre = document.getElementById('sobreProjeto').value.trim();
+                if (!sobre) {
+                    errorEl.classList.add('show');
+                    return false;
+                }
+                formData.sobreProjeto = sobre;
+                break;
+            case 4:
+                if (!formData.orcamento) {
+                    errorEl.classList.add('show');
+                    return false;
+                }
+                break;
+            case 5:
+                const seg = document.getElementById('segmento').value.trim();
+                if (!seg) {
+                    errorEl.classList.add('show');
+                    return false;
+                }
+                formData.segmento = seg;
+                break;
+            case 6:
+                const nome = document.getElementById('nome').value.trim();
+                if (!nome) {
+                    errorEl.classList.add('show');
+                    return false;
+                }
+                formData.nome = nome;
+                break;
+            case 7:
+                const wpp = document.getElementById('whatsapp').value.trim();
+                if (!wpp) {
+                    errorEl.classList.add('show');
+                    return false;
+                }
+                formData.whatsapp = wpp;
+                break;
+            case 8:
+                formData.email = document.getElementById('email').value.trim();
+                break;
+        }
+        return true;
+    }
+
+    function nextStep(step) {
+        if (!validate(step)) return;
+        if (step < totalSteps) {
+            currentStep = step + 1;
+            showStep(currentStep);
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+
+    function goNext() {
+        if (currentStep < totalSteps) {
+            nextStep(currentStep);
+        }
+    }
+
+    function showReview() {
+        formData.email = document.getElementById('email').value.trim();
+
+        for (let i = 1; i <= totalSteps; i++) {
+            document.getElementById('step' + i).classList.remove('active');
+        }
+
+        document.getElementById('navArrows').style.display = 'none';
+        document.getElementById('progressDots').style.display = 'none';
+        document.getElementById('stepCounter').style.display = 'none';
+        document.getElementById('progressBar').style.width = '100%';
+
+        const labels = {
+            tipoProjeto: 'Tipo de projeto',
+            estagio: 'Estágio',
+            sobreProjeto: 'Sobre o projeto',
+            orcamento: 'Orçamento',
+            segmento: 'Segmento',
+            nome: 'Nome',
+            whatsapp: 'Whatsapp',
+            email: 'E-mail'
+        };
+
+        let html = '';
+        for (const [key, label] of Object.entries(labels)) {
+            const val = formData[key] || '—';
+            html += `<div class="review-item">
+                <div class="review-label">${label}</div>
+                <div class="review-value">${val}</div>
+            </div>`;
+        }
+
+        document.getElementById('reviewContent').innerHTML = html;
+        document.getElementById('reviewScreen').style.display = 'block';
+    }
+
+    function editForm() {
+        document.getElementById('reviewScreen').style.display = 'none';
+        document.getElementById('navArrows').style.display = 'flex';
+        document.getElementById('progressDots').style.display = 'flex';
+        document.getElementById('stepCounter').style.display = 'block';
+        currentStep = 1;
+        showStep(1);
+    }
+
+    function submitForm() {
+        document.getElementById('reviewScreen').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+        document.getElementById('progressBar').style.width = '100%';
+
+        // monta a mensagem com os dados e abre o WhatsApp do Nicolas
+        var labelsWa = {
+            tipoProjeto: 'Tipo de projeto',
+            estagio: 'Estágio',
+            sobreProjeto: 'Sobre o projeto',
+            orcamento: 'Orçamento',
+            segmento: 'Segmento',
+            nome: 'Nome',
+            whatsapp: 'WhatsApp',
+            email: 'E-mail'
+        };
+        var linhas = ['*Nova solicitação pela landing page*', ''];
+        for (var k in labelsWa) {
+            if (formData[k]) linhas.push('*' + labelsWa[k] + ':* ' + formData[k]);
+        }
+        var msg = encodeURIComponent(linhas.join('\n'));
+
+        // WhatsApp AUTOMÁTICO para o Nicolas (via CallMeBot). Cole a apikey entre as aspas abaixo:
+        var CALLMEBOT_KEY = '';
+        if (CALLMEBOT_KEY) {
+            var beacon = new Image();
+            beacon.src = 'https://api.callmebot.com/whatsapp.php?phone=5521997441995&text=' + msg + '&apikey=' + CALLMEBOT_KEY;
+        }
+
+        // envia também por e-mail automaticamente (FormSubmit) — garantia/backup
+        try {
+            fetch('https://formsubmit.co/ajax/np904430@gmail.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    _subject: 'Nova solicitação pela landing page',
+                    _template: 'table',
+                    Nome: formData.nome || '',
+                    WhatsApp: formData.whatsapp || '',
+                    Email: formData.email || '',
+                    'Tipo de projeto': formData.tipoProjeto || '',
+                    'Estágio': formData.estagio || '',
+                    'Sobre o projeto': formData.sobreProjeto || '',
+                    'Orçamento': formData.orcamento || '',
+                    'Segmento': formData.segmento || ''
+                })
+            }).catch(function(){});
+        } catch (e) {}
+
+        console.log('Dados do formulário:', formData);
+    }
+
+    // Máscara de telefone
+    document.getElementById('whatsapp').addEventListener('input', function(e) {
+        let v = e.target.value.replace(/\D/g, '');
+        if (v.length > 11) v = v.slice(0, 11);
+        if (v.length > 7) {
+            v = '(' + v.slice(0, 2) + ') ' + v.slice(2, 7) + '-' + v.slice(7);
+        } else if (v.length > 2) {
+            v = '(' + v.slice(0, 2) + ') ' + v.slice(2);
+        } else if (v.length > 0) {
+            v = '(' + v;
+        }
+        e.target.value = v;
+    });
+
+    // Enter para avançar
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && currentStep > 0 && currentStep <= totalSteps) {
+            e.preventDefault();
+            if (currentStep === totalSteps) {
+                showReview();
+            } else {
+                nextStep(currentStep);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
